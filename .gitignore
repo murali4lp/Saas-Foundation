@@ -3,6 +3,12 @@ __pycache__/
 *.py[cod]
 *$py.class
 
+# ignore static vendor files
+src/staticfiles/vendors
+
+# ignore local static file root or "local cdn"
+local-cdn/
+
 # C extensions
 *.so
 
