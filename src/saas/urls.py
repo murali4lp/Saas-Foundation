@@ -15,12 +15,31 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path
+from django.urls import include, path
 
-from .views import home_page, about_page
+from .views import (
+    home_page, 
+    about_page, 
+    pw_protected_page,
+    staff_only_page,
+    user_only_page
+)
+from auth.views import login_view, register_view
+from subscriptions.views import subscription_price_page
+from checkouts.views import checkout_redirect, checkout_finalize, product_price_redirect
 
 urlpatterns = [
-    path('', home_page),
+    path('', home_page, name='home'),
+    path('checkout/sub-price/<int:price_id>/', product_price_redirect, name='sub-price-checkout'),
+    path('checkout/start/', checkout_redirect, name='stripe-checkout-start'),
+    path('checkout/success/', checkout_finalize, name='stripe-checkout-end'),
+    path('pricing/', subscription_price_page, name='pricing'),
+    path('pricing/<str:interval>', subscription_price_page, name='pricing_interval'),
     path('about/', about_page),
+    path('accounts/', include('allauth.urls')),
+    path('protected/', pw_protected_page),
+    path('protected/user-only/', user_only_page),    
+    path('protected/staff-only/', staff_only_page),
+    path('profiles/', include('profiles.urls')),
     path('admin/', admin.site.urls),
 ]

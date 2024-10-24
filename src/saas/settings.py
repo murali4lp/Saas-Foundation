@@ -24,7 +24,7 @@ EMAIL_HOST_PASSWORD = config("EMAIL_HOST_PASSWORD", cast=str, default=None)
 EMAIL_USE_TLS = config("EMAIL_USE_TLS", cast=bool, default=True)  # Use EMAIL_PORT 587 for TLS
 EMAIL_USE_SSL = config("EMAIL_USE_SSL", cast=bool, default=False)  # Use MAIL_PORT 465 for SSL
 
-ADMINS = [('Murali', ' murali412@gmail.com')]
+ADMINS = [(config("ADMIN_USER_NAME", cast=str, default="test_user"), config("ADMIN_USER_EMAIL", cast=str))]
 MANAGERS = ADMINS
 
 
@@ -60,7 +60,21 @@ INSTALLED_APPS = [
 
     # user apps
     'commando',
-    'visits'
+    'visits',
+    'profiles',
+    'customers',
+    'checkouts',
+    'subscriptions',
+
+    # third party apps
+    "allauth_ui",
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+    'allauth.socialaccount.providers.github',
+    'allauth.socialaccount.providers.google',
+    "widget_tweaks",
+    "slippers",
 ]
 
 MIDDLEWARE = [
@@ -71,6 +85,7 @@ MIDDLEWARE = [
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
+    "allauth.account.middleware.AccountMiddleware",
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
@@ -87,13 +102,39 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
-            ],
+            ]
         },
     },
 ]
 
 WSGI_APPLICATION = 'saas.wsgi.application'
 
+ALLAUTH_UI_THEME = "light"
+
+# Django allauth configs
+LOGIN_REDIRECT_URL = "/"
+ACCOUNT_AUTHENTICATION_METHOD = "username_email"
+ACCOUNT_EMAIL_VERIFICATION="mandatory"
+ACCOUNT_EMAIL_SUBJECT_PREFIX="[SaaS] "
+ACCOUNT_EMAIL_REQUIRED=True
+
+
+AUTHENTICATION_BACKENDS = [
+    # Needed to login by username in Django admin, regardless of `allauth`
+    'django.contrib.auth.backends.ModelBackend',
+
+    # `allauth` specific authentication methods, such as login by email
+    'allauth.account.auth_backends.AuthenticationBackend',
+]
+
+SOCIALACCOUNT_PROVIDERS = {
+    "github": {
+        "VERIFIED_EMAIL": True
+    },
+    "google": {
+        "VERIFIED_EMAIL": True
+    }
+}
 
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
