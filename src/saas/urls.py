@@ -25,7 +25,7 @@ from .views import (
     user_only_page
 )
 from auth.views import login_view, register_view
-from subscriptions.views import subscription_price_page
+from subscriptions.views import subscription_price_page, user_subscription, user_subscription_cancel
 from checkouts.views import checkout_redirect, checkout_finalize, product_price_redirect
 
 urlpatterns = [
@@ -36,6 +36,8 @@ urlpatterns = [
     path('pricing/', subscription_price_page, name='pricing'),
     path('pricing/<str:interval>', subscription_price_page, name='pricing_interval'),
     path('about/', about_page),
+    path('accounts/billing/', user_subscription, name='user_subscription'),
+    path('accounts/billing/cancel', user_subscription_cancel, name='user_subscription_cancel'),
     path('accounts/', include('allauth.urls')),
     path('protected/', pw_protected_page),
     path('protected/user-only/', user_only_page),    
