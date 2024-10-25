@@ -4,9 +4,9 @@ on:
   workflow_dispatch:
   # schedule:
   #   - cron: '30 15 * * *'
-  push: # git push
-    branches:
-      - main
+  # push: # git push
+  #   branches:
+  #     - main
 
 jobs:
   hello:
