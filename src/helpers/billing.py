@@ -5,10 +5,11 @@ from .date_utils import timestamp_as_datetime
 
 DJANGO_DEBUG = config('DJANGO_DEBUG', cast=bool, default=True)
 STRIPE_SECRET_KEY = config('STRIPE_SECRET_KEY', default='', cast=str)
+STRIPE_TEST_OVERRIDE = config('STRIPE_TEST_OVERRIDE', default=False, cast=bool)
 
 PAYMENT_MODE='subscription'
 
-if 'sk_test' in STRIPE_SECRET_KEY and not DJANGO_DEBUG:
+if 'sk_test' in STRIPE_SECRET_KEY and not DJANGO_DEBUG and not STRIPE_TEST_OVERRIDE:
     raise ValueError('Invalid stripe key for prod')
 
 stripe.api_key = "sk_test_tR3PYbcVNZZ796tH88S4VQ2u"

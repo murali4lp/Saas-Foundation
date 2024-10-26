@@ -25,11 +25,12 @@ from .views import (
     user_only_page
 )
 from auth.views import login_view, register_view
+from landing.views import landing_dashboard_page
 from subscriptions.views import subscription_price_page, user_subscription, user_subscription_cancel
 from checkouts.views import checkout_redirect, checkout_finalize, product_price_redirect
 
 urlpatterns = [
-    path('', home_page, name='home'),
+    path('', landing_dashboard_page, name='home'),
     path('checkout/sub-price/<int:price_id>/', product_price_redirect, name='sub-price-checkout'),
     path('checkout/start/', checkout_redirect, name='stripe-checkout-start'),
     path('checkout/success/', checkout_finalize, name='stripe-checkout-end'),
